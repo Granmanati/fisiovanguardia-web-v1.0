@@ -3,6 +3,10 @@ import { supabase, supabaseClinicId, supabaseUrl } from "@/lib/supabaseClient";
 
 const EXPECTED_SUPABASE_URL = "https://oectaalotsfsscxkiqdv.supabase.co";
 
+export type PublicBlogPost = BlogPost & {
+  content: string;
+};
+
 type BlogPostRow = Record<string, unknown>;
 
 function stringField(row: BlogPostRow, keys: string[], fallback = "") {
@@ -38,6 +42,11 @@ function bodyField(row: BlogPostRow) {
     .filter(Boolean);
 }
 
+function contentField(row: BlogPostRow, body: string[]) {
+  const content = stringField(row, ["content", "body_md", "markdown", "body", "html"], "");
+  return content || body.join("\n\n");
+}
+
 function readingTime(row: BlogPostRow, body: string[]) {
   const configured = stringField(row, ["reading_time", "readingTime", "read_time"], "");
   if (configured) return configured;
@@ -46,7 +55,14 @@ function readingTime(row: BlogPostRow, body: string[]) {
   return `${Math.max(1, Math.ceil(words / 220))} min`;
 }
 
-function normalizePost(row: BlogPostRow): BlogPost | null {
+function withContent(post: BlogPost): PublicBlogPost {
+  return {
+    ...post,
+    content: post.body.join("\n\n")
+  };
+}
+
+function normalizePost(row: BlogPostRow): PublicBlogPost | null {
   const slug = stringField(row, ["slug"], "");
   const title = stringField(row, ["title"], "");
 
@@ -55,6 +71,7 @@ function normalizePost(row: BlogPostRow): BlogPost | null {
   }
 
   const body = bodyField(row);
+  const content = contentField(row, body);
 
   return {
     title,
@@ -65,6 +82,7 @@ function normalizePost(row: BlogPostRow): BlogPost | null {
     readingTime: readingTime(row, body),
     date: dateField(row),
     thumbnail: stringField(row, ["thumbnail", "thumbnail_url", "cover_image", "cover_image_url", "image_url"], "/blog/cervical.jpg"),
+    content,
     body
   };
 }
@@ -81,21 +99,29 @@ function logPublicBlogConfig() {
   }
 }
 
-export async function getPublishedBlogPosts() {
+export async function getPublishedBlogPosts(limit?: number): Promise<PublicBlogPost[]> {
   logPublicBlogConfig();
 
   if (!supabase) {
     console.warn("[Public Blog] Supabase not configured. Using local fallback posts.");
-    return blogPosts;
+    const fallbackPosts = blogPosts.map(withContent);
+    return typeof limit === "number" ? fallbackPosts.slice(0, limit) : fallbackPosts;
   }
 
   console.info("[Public Blog] Loading published posts...");
 
-  const { data, error } = await supabase
+  let query = supabase
     .from("blog_posts")
-    .select("*")
+    .select("id,title,slug,excerpt,cover_image,category,read_time,published_at,created_at")
     .eq("status", "published")
-    .order("published_at", { ascending: false });
+    .order("published_at", { ascending: false })
+    .order("created_at", { ascending: false });
+
+  if (typeof limit === "number") {
+    query = query.limit(limit);
+  }
+
+  const { data, error } = await query;
 
   if (error) {
     console.error("[Public Blog] Error:", error);
@@ -104,7 +130,7 @@ export async function getPublishedBlogPosts() {
 
   const posts = (data ?? [])
     .map((row) => normalizePost(row as BlogPostRow))
-    .filter((post): post is BlogPost => Boolean(post));
+    .filter((post): post is PublicBlogPost => Boolean(post));
 
   console.info("[Public Blog] Posts loaded:", posts.length, posts.map((post) => post.slug));
   return posts;
@@ -115,7 +141,8 @@ export async function getPublishedBlogPostBySlug(slug: string) {
 
   if (!supabase) {
     console.warn("[Public Blog] Supabase not configured. Using local fallback post.");
-    return blogPosts.find((post) => post.slug === slug) ?? null;
+    const post = blogPosts.find((item) => item.slug === slug);
+    return post ? withContent(post) : null;
   }
 
   console.info("[Public Blog] Loading published posts...");

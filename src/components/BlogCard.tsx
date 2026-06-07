@@ -6,7 +6,7 @@ import { ArrowUpRight } from "lucide-react";
 import { useState } from "react";
 import type { BlogPost } from "@/data/blog";
 
-export function BlogCard({ post, featured = false, basePath = "/blog" }: { post: BlogPost; featured?: boolean; basePath?: string }) {
+export function BlogCard({ post, featured = false, basePath = "/articulos" }: { post: BlogPost; featured?: boolean; basePath?: string }) {
   const [imageAvailable, setImageAvailable] = useState(true);
 
   return (

@@ -15,7 +15,7 @@ export const siteConfig = {
 export const navItems = [
   { label: "Servicios", href: "/fisioterapia-a-domicilio" },
   { label: "Tratamientos", href: "/tratamientos" },
-  { label: "Artículos", href: "/blog" },
+  { label: "Artículos", href: "/articulos" },
   { label: "Sobre nosotros", href: "/sobre-nosotros" },
   { label: "MOVE OS", href: "/move-os" }
 ];

@@ -11,9 +11,13 @@ import { Reveal } from "@/components/Reveal";
 import { SectionHeading } from "@/components/SectionHeading";
 import { SocialCards } from "@/components/SocialCards";
 import { TrustBar } from "@/components/TrustBar";
-import { blogPosts } from "@/data/blog";
+import { getPublishedBlogPosts } from "@/lib/publicBlog";
 
-export default function HomePage() {
+export const revalidate = 60;
+
+export default async function HomePage() {
+  const latestPosts = await getPublishedBlogPosts(3);
+
   return (
     <>
       <Hero />
@@ -116,12 +120,28 @@ export default function HomePage() {
             />
           </Reveal>
           <div className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-            {blogPosts.slice(0, 3).map((post, index) => (
-              <Reveal key={post.slug} delay={index * 80}>
-                <BlogCard post={post} featured={index === 0} />
+            {latestPosts.length > 0 ? (
+              latestPosts.map((post, index) => (
+                <Reveal key={post.slug} delay={index * 80}>
+                  <BlogCard post={post} featured={index === 0} basePath="/articulos" />
+                </Reveal>
+              ))
+            ) : (
+              <Reveal className="md:col-span-2 lg:col-span-3">
+                <div className="rounded-[1.6rem] border border-white/10 bg-white/[0.045] p-8 text-center shadow-card">
+                  <p className="text-lg font-semibold text-text-primary">Próximamente publicaremos nuevos recursos clínicos.</p>
+                  <ButtonLink href="/articulos" variant="secondary" className="mt-6">
+                    Ver artículos
+                  </ButtonLink>
+                </div>
               </Reveal>
-            ))}
+            )}
           </div>
+          <Reveal className="mt-10 flex justify-center" delay={260}>
+            <ButtonLink href="/articulos" variant="secondary">
+              Ver todos los artículos
+            </ButtonLink>
+          </Reveal>
         </div>
       </section>
 

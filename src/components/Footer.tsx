@@ -26,7 +26,7 @@ const footerColumns = [
   {
     title: "Recursos",
     links: [
-      ["Artículos", "/blog"],
+      ["Artículos", "/articulos"],
       ["Sistema cervical", "/tratamientos/cervical"],
       ["Sistema lumbar", "/tratamientos/lumbar"],
       ["ATM y migraña", "/tratamientos/atm-migrana"]
