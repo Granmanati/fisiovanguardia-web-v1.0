@@ -15,6 +15,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const { slug } = await params;
   const post = await getPublishedBlogPostBySlug(slug);
   if (!post) return {};
+
   return {
     title: post.title,
     description: post.excerpt,
@@ -26,21 +27,23 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   };
 }
 
-export default async function BlogPostPage({ params }: PageProps) {
+export default async function ArticlePage({ params }: PageProps) {
   const { slug } = await params;
   const post = await getPublishedBlogPostBySlug(slug);
   if (!post) notFound();
 
   return (
     <>
-      <JsonLd data={[
-        articleSchema(post),
-        breadcrumbSchema([
-          { name: "Inicio", url: "https://fisiovanguardia.com" },
-          { name: "Artículos", url: "https://fisiovanguardia.com/blog" },
-          { name: post.title, url: `https://fisiovanguardia.com/blog/${post.slug}` }
-        ])
-      ]} />
+      <JsonLd
+        data={[
+          articleSchema(post),
+          breadcrumbSchema([
+            { name: "Inicio", url: "https://fisiovanguardia.com" },
+            { name: "Artículos", url: "https://fisiovanguardia.com/articulos" },
+            { name: post.title, url: `https://fisiovanguardia.com/articulos/${post.slug}` }
+          ])
+        ]}
+      />
       <article className="py-20 md:py-32">
         <div className="container-premium max-w-4xl">
           <div className="text-sm text-muted">

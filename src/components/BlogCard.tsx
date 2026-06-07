@@ -6,12 +6,12 @@ import { ArrowUpRight } from "lucide-react";
 import { useState } from "react";
 import type { BlogPost } from "@/data/blog";
 
-export function BlogCard({ post, featured = false }: { post: BlogPost; featured?: boolean }) {
+export function BlogCard({ post, featured = false, basePath = "/blog" }: { post: BlogPost; featured?: boolean; basePath?: string }) {
   const [imageAvailable, setImageAvailable] = useState(true);
 
   return (
     <article className={`group overflow-hidden rounded-[1.6rem] border border-white/10 bg-white/[0.045] shadow-card transition duration-300 hover:-translate-y-1 hover:border-accent-soft/25 hover:bg-white/[0.065] ${featured ? "md:col-span-2 lg:col-span-1" : ""}`}>
-      <Link href={`/blog/${post.slug}`} className="block h-full">
+      <Link href={`${basePath}/${post.slug}`} className="block h-full">
         <div className="relative aspect-[16/10] overflow-hidden bg-gradient-to-br from-accent/25 via-background to-accent-soft/10">
           {imageAvailable ? (
             <Image
