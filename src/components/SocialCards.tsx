@@ -15,7 +15,7 @@ const socialIcons: Record<SocialPlatform, typeof Youtube> = {
 
 export function SocialCards() {
   return (
-    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-5">
+    <div className="-mx-6 flex snap-x snap-mandatory gap-4 overflow-x-auto px-6 pb-3 md:mx-0 md:grid md:gap-4 md:overflow-visible md:px-0 md:pb-0 md:grid-cols-2 lg:grid-cols-5">
       {socialLinks.map((card) => (
         <SocialCard key={card.platform} card={card} />
       ))}
@@ -32,9 +32,9 @@ function SocialCard({ card }: { card: SocialLink }) {
       href={card.url}
       target="_blank"
       rel="noreferrer"
-      className="focus-ring group overflow-hidden rounded-[1.6rem] border border-white/10 bg-white/[0.04] shadow-card transition duration-300 hover:-translate-y-2 hover:border-accent-soft/35 hover:bg-white/[0.07] hover:shadow-glow"
+      className="focus-ring group min-w-[82%] max-w-[320px] snap-start overflow-hidden rounded-[1.6rem] border border-white/10 bg-white/[0.04] shadow-card transition duration-300 hover:-translate-y-2 hover:border-accent-soft/35 hover:bg-white/[0.07] hover:shadow-glow md:min-w-0 md:max-w-none"
     >
-      <div className="relative aspect-[4/3] overflow-hidden bg-gradient-to-br from-accent/25 via-background to-accent-soft/10">
+      <div className="relative aspect-[16/9] overflow-hidden bg-gradient-to-br from-accent/25 via-background to-accent-soft/10 md:aspect-[4/3]">
         {imageAvailable ? (
           <Image
             src={card.thumbnail}
@@ -60,9 +60,9 @@ function SocialCard({ card }: { card: SocialLink }) {
         </div>
       </div>
 
-      <div className="p-5">
+      <div className="p-4 md:p-5">
         <h3 className="text-lg font-semibold leading-7 text-text-primary">{card.label}</h3>
-        <p className="mt-3 min-h-20 text-sm leading-6 text-text-secondary">{card.description}</p>
+        <p className="mt-3 line-clamp-2 text-sm leading-6 text-text-secondary md:min-h-20 md:line-clamp-none">{card.description}</p>
         <p className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-accent-soft transition group-hover:text-text-primary">
           {card.cta}
           <ArrowUpRight size={15} />

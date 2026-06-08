@@ -12,7 +12,7 @@ export function BlogCard({ post, featured = false, basePath = "/articulos" }: { 
   return (
     <article className={`group overflow-hidden rounded-[1.6rem] border border-white/10 bg-white/[0.045] shadow-card transition duration-300 hover:-translate-y-1 hover:border-accent-soft/25 hover:bg-white/[0.065] ${featured ? "md:col-span-2 lg:col-span-1" : ""}`}>
       <Link href={`${basePath}/${post.slug}`} className="block h-full">
-        <div className="relative aspect-[16/10] overflow-hidden bg-gradient-to-br from-accent/25 via-background to-accent-soft/10">
+        <div className="relative aspect-[16/9] overflow-hidden bg-gradient-to-br from-accent/25 via-background to-accent-soft/10 md:aspect-[16/10]">
           {imageAvailable ? (
             <Image
               src={post.thumbnail}
@@ -34,10 +34,10 @@ export function BlogCard({ post, featured = false, basePath = "/articulos" }: { 
           </div>
         </div>
 
-        <div className="flex min-h-[17rem] flex-col p-6">
-          <h2 className="text-2xl font-semibold tracking-tight text-text-primary">{post.title}</h2>
-          <p className="mt-4 line-clamp-3 text-sm leading-6 text-text-secondary">{post.excerpt}</p>
-          <div className="mt-auto pt-7">
+        <div className="flex min-h-[13rem] flex-col p-5 md:min-h-[17rem] md:p-6">
+          <h2 className="text-xl font-semibold tracking-tight text-text-primary md:text-2xl">{post.title}</h2>
+          <p className="mt-3 line-clamp-2 text-sm leading-6 text-text-secondary md:mt-4 md:line-clamp-3">{post.excerpt}</p>
+          <div className="mt-auto pt-5 md:pt-7">
             <p className="inline-flex items-center gap-2 text-sm font-semibold text-accent-soft transition group-hover:text-text-primary">
               Leer artículo
               <ArrowUpRight size={15} />

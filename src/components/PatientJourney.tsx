@@ -60,7 +60,11 @@ export function PatientJourney() {
           </div>
         </Reveal>
 
-        <div className="relative mt-12 lg:mt-16">
+        <div className="mt-8 md:hidden">
+          <MobileJourneyCarousel />
+        </div>
+
+        <div className="relative mt-12 hidden md:block lg:mt-16">
           <div className="absolute left-6 top-0 h-full w-px bg-gradient-to-b from-accent-soft via-accent to-transparent lg:left-0 lg:right-0 lg:top-1/2 lg:mx-auto lg:h-px lg:w-[88%] lg:-translate-y-1/2 lg:bg-gradient-to-r" aria-hidden="true" />
 
           <div className="grid gap-5 lg:grid-cols-6 lg:gap-4">
@@ -88,5 +92,27 @@ export function PatientJourney() {
         </Reveal>
       </div>
     </section>
+  );
+}
+
+function MobileJourneyCarousel() {
+  return (
+    <div>
+      <div className="-mx-6 flex snap-x snap-mandatory gap-4 overflow-x-auto px-6 pb-3">
+        {journey.map((item) => (
+          <article key={item.step} className="min-w-[82%] snap-start rounded-3xl border border-white/10 bg-background/65 p-5 shadow-card backdrop-blur-xl">
+            <div className="mb-5 flex items-center justify-between gap-3">
+              <IconBadge icon={item.icon} label={item.title} size="sm" />
+              <span className="rounded-2xl border border-accent-soft/25 bg-accent px-3 py-2 text-sm font-semibold text-white shadow-glow">
+                {item.step}
+              </span>
+            </div>
+            <h3 className="text-xl font-semibold text-text-primary">{item.title}</h3>
+            <p className="mt-3 text-sm leading-6 text-text-secondary">{item.copy}</p>
+          </article>
+        ))}
+      </div>
+      <p className="mt-2 text-xs font-semibold uppercase tracking-[0.16em] text-muted">Desliza para ver la ruta</p>
+    </div>
   );
 }

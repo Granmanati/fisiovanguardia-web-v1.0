@@ -51,7 +51,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       <body>
         <JsonLd data={[localBusinessSchema(), faqSchema()]} />
         <Header />
-        <main>{children}</main>
+        <main className="pb-28 lg:pb-0">{children}</main>
         <Footer />
         <FloatingReceptionAgent />
       </body>

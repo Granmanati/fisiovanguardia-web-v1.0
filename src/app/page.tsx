@@ -92,7 +92,12 @@ export default async function HomePage() {
             />
           </Reveal>
           <Reveal className="mt-12" delay={120}>
-            <ClinicalModulesGrid />
+            <ClinicalModulesGrid mobileLimit={4} />
+          </Reveal>
+          <Reveal className="mt-8 flex justify-center md:hidden" delay={180}>
+            <ButtonLink href="/tratamientos" variant="secondary">
+              Ver todos los tratamientos
+            </ButtonLink>
           </Reveal>
         </div>
       </section>
@@ -119,10 +124,10 @@ export default async function HomePage() {
               copy="Tres artículos para tomar mejores decisiones antes de improvisar otra solución."
             />
           </Reveal>
-          <div className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+          <div className="-mx-6 mt-12 flex snap-x snap-mandatory gap-4 overflow-x-auto px-6 pb-3 md:mx-0 md:grid md:gap-5 md:overflow-visible md:px-0 md:pb-0 md:grid-cols-2 lg:grid-cols-3">
             {latestPosts.length > 0 ? (
               latestPosts.map((post, index) => (
-                <Reveal key={post.slug} delay={index * 80}>
+                <Reveal key={post.slug} delay={index * 80} className="min-w-[86%] snap-start md:min-w-0">
                   <BlogCard post={post} featured={index === 0} basePath="/articulos" />
                 </Reveal>
               ))

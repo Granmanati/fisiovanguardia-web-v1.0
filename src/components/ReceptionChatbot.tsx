@@ -122,25 +122,26 @@ export function ReceptionChatbot() {
   }
 
   return (
-    <div className="overflow-hidden rounded-[2rem] border border-white/10 bg-[#071018]/95 shadow-card backdrop-blur-2xl">
-      <div className="flex items-center gap-3 border-b border-white/10 bg-gradient-to-r from-accent/20 via-white/[0.04] to-accent-soft/10 p-4">
+    <div className="overflow-hidden rounded-[1.45rem] border border-white/10 bg-[#071018]/95 shadow-card backdrop-blur-2xl md:rounded-[2rem]">
+      <div className="flex items-center gap-3 border-b border-white/10 bg-gradient-to-r from-accent/20 via-white/[0.04] to-accent-soft/10 p-3 md:p-4">
         <ReceptionAvatar />
         <div className="min-w-0 flex-1">
-          <div className="flex items-center gap-2">
-            <h3 className="truncate text-base font-semibold text-text-primary">Recepción Fisiovanguardia</h3>
+          <h3 className="truncate text-base font-semibold text-text-primary">GLIA</h3>
+          <p className="truncate text-xs text-text-secondary">Asistente de Fisiovanguardia</p>
+          <p className="mt-0.5 flex items-center gap-1.5 text-xs font-semibold text-accent-soft">
             <span className="h-2 w-2 rounded-full bg-success shadow-[0_0_14px_rgba(16,185,129,0.85)]" />
-          </div>
-          <p className="mt-0.5 truncate text-xs text-text-secondary">En línea · Te oriento en menos de 60 segundos</p>
+            En línea
+          </p>
         </div>
         <div className="hidden rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-xs font-semibold text-accent-soft sm:block">
           Solicitud rápida
         </div>
       </div>
 
-      <div className="max-h-[520px] overflow-y-auto bg-[radial-gradient(circle_at_18%_8%,rgba(45,124,255,0.12),transparent_16rem),linear-gradient(135deg,rgba(255,255,255,0.025)_25%,transparent_25%,transparent_50%,rgba(255,255,255,0.025)_50%,rgba(255,255,255,0.025)_75%,transparent_75%,transparent)] bg-[length:auto,18px_18px] p-4">
-        <div className="grid gap-3">
+      <div className="max-h-[310px] overflow-y-auto bg-[radial-gradient(circle_at_18%_8%,rgba(45,124,255,0.12),transparent_16rem),linear-gradient(135deg,rgba(255,255,255,0.025)_25%,transparent_25%,transparent_50%,rgba(255,255,255,0.025)_50%,rgba(255,255,255,0.025)_75%,transparent_75%,transparent)] bg-[length:auto,18px_18px] p-3 md:max-h-[520px] md:p-4">
+        <div className="grid gap-2.5 md:gap-3">
           <BotMessage>
-            Hola, soy recepción de Fisiovanguardia. Te hago unas preguntas rápidas para orientar tu solicitud sin diagnosticar por aquí.
+            Hola, soy GLIA. Te hago unas preguntas rápidas para orientar tu solicitud sin diagnosticar por aquí.
           </BotMessage>
 
           {data.reason ? <UserMessage>{data.reason}</UserMessage> : null}
@@ -203,7 +204,7 @@ export function ReceptionChatbot() {
         </div>
       </div>
 
-      <div className="border-t border-white/10 bg-background/80 p-3">
+      <div className="border-t border-white/10 bg-background/80 p-2.5 md:p-3">
         <div className="flex items-center gap-2 rounded-2xl border border-white/10 bg-white/[0.035] px-3 py-2 text-xs leading-5 text-muted">
           <ShieldCheck className="shrink-0 text-accent-soft" size={16} />
           No diagnostica ni prescribe ejercicios. Solo prepara la solicitud de recepción.
@@ -215,8 +216,8 @@ export function ReceptionChatbot() {
 
 function ReceptionAvatar() {
   return (
-    <div className="relative flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-full border border-accent-soft/30 bg-gradient-to-br from-accent to-accent-soft shadow-glow">
-      <span className="text-sm font-bold tracking-tight text-white">FV</span>
+    <div className="relative flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full border border-accent-soft/35 bg-gradient-to-br from-accent to-accent-soft shadow-[0_0_24px_rgba(45,124,255,0.34)] md:h-12 md:w-12">
+      <span className="text-xs font-bold tracking-tight text-white md:text-sm">FV</span>
       <span className="absolute bottom-0.5 right-0.5 h-3 w-3 rounded-full border-2 border-[#071018] bg-success" />
     </div>
   );
@@ -226,7 +227,7 @@ function BotMessage({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex items-end gap-2">
       <ReceptionAvatar />
-      <div className="max-w-[86%] rounded-3xl rounded-bl-md border border-white/10 bg-white/[0.075] px-4 py-3 text-sm leading-6 text-text-primary shadow-card">
+      <div className="max-w-[86%] rounded-3xl rounded-bl-md border border-white/10 bg-white/[0.075] px-3.5 py-2.5 text-sm leading-6 text-text-primary shadow-card md:px-4 md:py-3">
         {children}
         <MessageMeta align="left" />
       </div>
@@ -237,7 +238,7 @@ function BotMessage({ children }: { children: React.ReactNode }) {
 function UserMessage({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex justify-end">
-      <div className="max-w-[86%] rounded-3xl rounded-br-md bg-accent px-4 py-3 text-sm font-medium leading-6 text-white shadow-glow">
+      <div className="max-w-[86%] rounded-3xl rounded-br-md bg-accent px-3.5 py-2.5 text-sm font-medium leading-6 text-white shadow-glow md:px-4 md:py-3">
         {children}
         <MessageMeta align="right" />
       </div>
@@ -256,18 +257,18 @@ function MessageMeta({ align }: { align: "left" | "right" }) {
 
 function QuickReplyGroup({ title, options, onSelect }: { title: string; options: string[]; onSelect: (value: string) => void }) {
   return (
-    <div className="ml-14 rounded-3xl border border-white/10 bg-background/55 p-3 backdrop-blur-xl">
-      <p className="mb-3 flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.16em] text-accent-soft">
+    <div className="ml-11 rounded-3xl border border-white/10 bg-background/55 p-3 backdrop-blur-xl md:ml-14">
+      <p className="mb-3 flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-accent-soft md:text-xs md:tracking-[0.16em]">
         <Sparkles size={13} />
         {title}
       </p>
-      <div className="flex flex-wrap gap-2">
+      <div className="grid grid-cols-2 gap-2 md:flex md:flex-wrap">
         {options.map((option) => (
           <button
             key={option}
             type="button"
             onClick={() => onSelect(option)}
-            className="focus-ring min-h-10 rounded-full border border-accent-soft/20 bg-accent/10 px-3.5 text-sm font-semibold text-text-primary transition hover:-translate-y-0.5 hover:border-accent-soft/40 hover:bg-accent hover:text-white"
+            className="focus-ring min-h-9 rounded-full border border-accent-soft/20 bg-accent/10 px-3 text-xs font-semibold leading-4 text-text-primary transition hover:-translate-y-0.5 hover:border-accent-soft/40 hover:bg-accent hover:text-white md:min-h-10 md:px-3.5 md:text-sm"
           >
             {option}
           </button>
@@ -289,7 +290,7 @@ function ChatInput({ label, placeholder, type = "text", onSubmit }: { label: str
   }
 
   return (
-    <form onSubmit={handleSubmit} className="ml-14 flex items-center gap-2 rounded-full border border-white/10 bg-background/80 p-2 backdrop-blur-xl">
+    <form onSubmit={handleSubmit} className="ml-11 flex items-center gap-2 rounded-full border border-white/10 bg-background/80 p-2 backdrop-blur-xl md:ml-14">
       <label className="sr-only">{label}</label>
       <input
         value={value}
@@ -312,7 +313,7 @@ function TypingState() {
       <ReceptionAvatar />
       <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.06] px-4 py-2">
         <Clock3 size={13} className="text-accent-soft" />
-        Recepción está preparando tu solicitud
+        GLIA está preparando tu solicitud
         <span className="flex gap-1">
           <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-accent-soft" />
           <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-accent-soft [animation-delay:120ms]" />
@@ -325,7 +326,7 @@ function TypingState() {
 
 function SummaryCard({ data, qualityLabel, saved, message }: { data: ChatState; qualityLabel: string; saved: boolean; message: string }) {
   return (
-    <div className="ml-14 rounded-3xl border border-accent-soft/20 bg-gradient-to-br from-accent/16 via-white/[0.055] to-accent-soft/10 p-4 shadow-card">
+    <div className="ml-11 rounded-3xl border border-accent-soft/20 bg-gradient-to-br from-accent/16 via-white/[0.055] to-accent-soft/10 p-4 shadow-card md:ml-14">
       <p className="text-sm font-semibold text-text-primary">Resumen para el equipo</p>
       <dl className="mt-3 grid gap-2 text-sm text-text-secondary">
         <SummaryRow label="Nombre" value={data.name} />

@@ -19,6 +19,8 @@ const iconMap = {
   jaw: ScanFace
 };
 
+const mobileZones = painMapZones.filter((zone) => ["cervical", "lumbar", "atm", "hombro", "rodilla", "tobillo-pie"].includes(zone.id));
+
 export function InteractivePainMap() {
   const [active, setActive] = useState<PainMapZone>(painMapZones[0]);
   const [hasBodyMap, setHasBodyMap] = useState(true);
@@ -62,7 +64,11 @@ export function InteractivePainMap() {
       <div className="absolute -left-28 top-10 h-72 w-72 rounded-full bg-accent/10 blur-3xl" aria-hidden="true" />
       <div className="absolute -right-28 bottom-10 h-80 w-80 rounded-full bg-accent-soft/10 blur-3xl" aria-hidden="true" />
 
-      <div className="relative grid gap-5 lg:grid-cols-[0.82fr_1.15fr_0.95fr] xl:gap-6">
+      <div className="relative lg:hidden">
+        <MobilePainMap active={active} onSelect={setActive} />
+      </div>
+
+      <div className="relative hidden gap-5 lg:grid lg:grid-cols-[0.82fr_1.15fr_0.95fr] xl:gap-6">
         <PainFigure
           active={active}
           hasBodyMap={hasBodyMap}
@@ -76,6 +82,59 @@ export function InteractivePainMap() {
 
         <InfoPanel active={active} />
       </div>
+    </div>
+  );
+}
+
+function MobilePainMap({ active, onSelect }: { active: PainMapZone; onSelect: (zone: PainMapZone) => void }) {
+  return (
+    <div className="grid gap-4">
+      <div>
+        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent-soft">Zonas frecuentes</p>
+        <h3 className="mt-3 text-2xl font-semibold tracking-tight text-text-primary">Elige la zona principal</h3>
+        <p className="mt-2 text-sm leading-6 text-text-secondary">Usa el mapa como orientación rápida. Después afinamos el caso contigo.</p>
+      </div>
+
+      <div className="-mx-1 flex snap-x snap-mandatory gap-2 overflow-x-auto px-1 pb-2">
+        {mobileZones.map((zone) => {
+          const Icon = iconMap[zone.icon];
+          const isActive = zone.id === active.id;
+
+          return (
+            <button
+              key={zone.id}
+              type="button"
+              onClick={() => onSelect(zone)}
+              aria-pressed={isActive}
+              className={`focus-ring flex min-w-[9.5rem] snap-start items-center gap-2 rounded-2xl border px-3 py-3 text-left transition ${
+                isActive ? "border-accent-soft/45 bg-accent/15 text-text-primary" : "border-white/10 bg-background/45 text-text-secondary"
+              }`}
+            >
+              <span className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-xl ${isActive ? "bg-accent text-white" : "bg-accent/10 text-accent-soft"}`}>
+                <Icon size={16} />
+              </span>
+              <span className="text-sm font-semibold leading-5">{zone.name}</span>
+            </button>
+          );
+        })}
+      </div>
+
+      <aside className="rounded-[1.35rem] border border-white/10 bg-white/[0.045] p-4 shadow-card backdrop-blur-xl">
+        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-accent-soft">Zona seleccionada</p>
+        <h3 className="mt-3 text-2xl font-semibold tracking-tight text-text-primary">{active.name}</h3>
+        <p className="mt-2 text-sm font-semibold text-accent-soft">{active.subtitle}</p>
+        <p className="mt-4 line-clamp-3 text-sm leading-6 text-text-secondary">{active.description}</p>
+        <div className="mt-5 grid gap-3">
+          <ButtonLink href={`/tratamientos/${active.slug}`} variant="secondary" className="gap-2">
+            Ver tratamiento <ArrowUpRight size={16} />
+          </ButtonLink>
+          <ButtonLink href="/reserva" className="gap-2">
+            Reservar valoración <CalendarCheck size={16} />
+          </ButtonLink>
+        </div>
+      </aside>
+
+      <p className="text-xs leading-5 text-muted">Desliza para ver más zonas frecuentes.</p>
     </div>
   );
 }
